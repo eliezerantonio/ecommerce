@@ -5,7 +5,7 @@ const Schema = use('Schema')
 
 class CouponProductSchema extends Schema {
   up () {
-    this.table('coupon_product', (table) => {
+    this.create('coupon_product', (table) => {
       // alter table
       table.increments()
       table.integer('coupon_id').unsigned()
@@ -18,7 +18,7 @@ class CouponProductSchema extends Schema {
         .inTable('coupons')
         .onDelete('cascade')
 
-      table.foreign('user_id')
+      table.foreign('product_id')
         .references('id')
         .inTable('products')
         .onDelete('cascade')

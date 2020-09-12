@@ -21,39 +21,39 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 var Schema = use('Schema');
 
-var OrderSchema =
+var CategorySchema =
 /*#__PURE__*/
 function (_Schema) {
-  _inherits(OrderSchema, _Schema);
+  _inherits(CategorySchema, _Schema);
 
-  function OrderSchema() {
-    _classCallCheck(this, OrderSchema);
+  function CategorySchema() {
+    _classCallCheck(this, CategorySchema);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(OrderSchema).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(CategorySchema).apply(this, arguments));
   }
 
-  _createClass(OrderSchema, [{
+  _createClass(CategorySchema, [{
     key: "up",
     value: function up() {
-      this.create('orders', function (table) {
+      this.create('categories', function (table) {
         // alter table
         table.increments();
-        table.decimal('total', 12, 2).defaultTo(0.0);
-        table.integer('user_id').unsigned();
-        table.enu('status', ['pending', 'cancelled', 'paid', 'finished']);
+        table.string('title', 100);
+        table.string('description', 255);
+        table.integer('image_id').unsigned();
         table.timestamps();
-        table.foreign('user_id').references('id').inTable('users').onDelete('cascade');
+        table.foreign('image_id').references('id').inTable('images').onDelete('cascade');
       });
     }
   }, {
     key: "down",
     value: function down() {
-      this.table('orders', function (table) {// reverse alternations
+      this.table('categories', function (table) {// reverse alternations
       });
     }
   }]);
 
-  return OrderSchema;
+  return CategorySchema;
 }(Schema);
 
-module.exports = OrderSchema;
+module.exports = CategorySchema;

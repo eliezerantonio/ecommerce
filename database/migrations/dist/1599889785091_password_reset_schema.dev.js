@@ -35,14 +35,14 @@ function (_Schema) {
   _createClass(PasswordResetSchema, [{
     key: "up",
     value: function up() {
-      this.table('password_resets', function (table) {
+      this.create('password_resets', function (table) {
         // alter table
         table.increments();
-        table.string('email').noNullable();
-        table.string('token').noNullable().unique();
+        table.string('email').notNullable();
+        table.string('token').notNullable().unique();
         table.dateTime('expires_at');
         table.timestamps();
-        table.foreign('email').references('id').inTable('users').onDelete('cascade');
+        table.foreign('email').references('email').inTable('users').onDelete('cascade');
       });
     }
   }, {

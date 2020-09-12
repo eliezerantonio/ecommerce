@@ -5,7 +5,7 @@ const Schema = use('Schema')
 
 class ImageSchema extends Schema {
   up () {
-    this.table('images', (table) => {
+    this.create('images', (table) => {
       table.increments()
       table.string('path', 255)
       table.integer('size').unsigned()
@@ -16,9 +16,7 @@ class ImageSchema extends Schema {
   }
 
   down () {
-    this.table('images', (table) => {
-      // reverse alternations
-    })
+    this.table('images' )
   }
 }
 

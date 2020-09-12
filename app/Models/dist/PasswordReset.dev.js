@@ -1,7 +1,9 @@
 'use strict';
-/** @type {import('@adonisjs/lucid/src/Schema')} */
+/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -13,47 +15,67 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
+
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var Schema = use('Schema');
+var Model = use('Model');
 
-var OrderSchema =
+var PasswordReset =
 /*#__PURE__*/
-function (_Schema) {
-  _inherits(OrderSchema, _Schema);
+function (_Model) {
+  _inherits(PasswordReset, _Model);
 
-  function OrderSchema() {
-    _classCallCheck(this, OrderSchema);
+  function PasswordReset() {
+    _classCallCheck(this, PasswordReset);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(OrderSchema).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(PasswordReset).apply(this, arguments));
   }
 
-  _createClass(OrderSchema, [{
-    key: "up",
-    value: function up() {
-      this.create('orders', function (table) {
-        // alter table
-        table.increments();
-        table.decimal('total', 12, 2).defaultTo(0.0);
-        table.integer('user_id').unsigned();
-        table.enu('status', ['pending', 'cancelled', 'paid', 'finished']);
-        table.timestamps();
-        table.foreign('user_id').references('id').inTable('users').onDelete('cascade');
+  _createClass(PasswordReset, null, [{
+    key: "boot",
+    value: function boot() {
+      _get(_getPrototypeOf(PasswordReset), "boot", this).call(this);
+
+      this.addHook('beforeCreate', function _callee(model) {
+        var expires_at;
+        return regeneratorRuntime.async(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return regeneratorRuntime.awrap(str_random(25));
+
+              case 2:
+                model.token = _context.sent;
+                expires_at = new Date();
+                expires_at = (_readOnlyError("expires_at"), setMinutes(expires_at.getMinutes() + 30)); //adicionar mais 30 minutos
+
+                model.expires_at = expires_at;
+
+              case 6:
+              case "end":
+                return _context.stop();
+            }
+          }
+        });
       });
-    }
+    } //formata os valores para o padrao do MYSQL
+
   }, {
-    key: "down",
-    value: function down() {
-      this.table('orders', function (table) {// reverse alternations
-      });
+    key: "dates",
+    get: function get() {
+      return ['created_at', 'updated_at', 'expires_at'];
     }
   }]);
 
-  return OrderSchema;
-}(Schema);
+  return PasswordReset;
+}(Model);
 
-module.exports = OrderSchema;
+module.exports = PasswordReset;

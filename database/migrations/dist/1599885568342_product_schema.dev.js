@@ -21,39 +21,55 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 var Schema = use('Schema');
 
-var OrderSchema =
+var ProductSchema =
 /*#__PURE__*/
 function (_Schema) {
-  _inherits(OrderSchema, _Schema);
+  _inherits(ProductSchema, _Schema);
 
-  function OrderSchema() {
-    _classCallCheck(this, OrderSchema);
+  function ProductSchema() {
+    _classCallCheck(this, ProductSchema);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(OrderSchema).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ProductSchema).apply(this, arguments));
   }
 
-  _createClass(OrderSchema, [{
+  _createClass(ProductSchema, [{
     key: "up",
     value: function up() {
-      this.create('orders', function (table) {
+      this.create('products', function (table) {
         // alter table
         table.increments();
-        table.decimal('total', 12, 2).defaultTo(0.0);
-        table.integer('user_id').unsigned();
-        table.enu('status', ['pending', 'cancelled', 'paid', 'finished']);
+        table.string('name', 200);
+        table.integer('image_id').unsigned();
+        table.text('description');
+        table.decimal('price', 12, 2);
         table.timestamps();
-        table.foreign('user_id').references('id').inTable('users').onDelete('cascade');
+        table.foreign('image_id').references('id').inTable('images').onDelete('cascade');
+      });
+      this.create('image_product', function (table) {
+        table.increments();
+        table.integer('image_id').unsigned();
+        table.integer('product_id').unsigned();
+        table.foreign('image_id').references('id').inTable('images').onDelete('cascade');
+        table.foreign('product_id').references('id').inTable('products').onDelete('cascade');
+      });
+      this.create('category_product', function (table) {
+        table.increments();
+        table.integer('product_id').unsigned();
+        table.integer('category_id').unsigned();
+        table.foreign('product_id').references('id').inTable('products').onDelete('cascade');
+        table.foreign('category_id').references('id').inTable('categories').onDelete('cascade');
       });
     }
   }, {
     key: "down",
     value: function down() {
-      this.table('orders', function (table) {// reverse alternations
-      });
+      this.drop('category_product');
+      this.drop('image_product');
+      this.table('products');
     }
   }]);
 
-  return OrderSchema;
+  return ProductSchema;
 }(Schema);
 
-module.exports = OrderSchema;
+module.exports = ProductSchema;

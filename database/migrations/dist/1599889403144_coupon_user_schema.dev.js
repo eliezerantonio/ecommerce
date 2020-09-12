@@ -35,7 +35,7 @@ function (_Schema) {
   _createClass(CouponUserSchema, [{
     key: "up",
     value: function up() {
-      this.table('coupon_users', function (table) {
+      this.create('coupon_users', function (table) {
         // alter table
         table.increments();
         table.integer('coupon_id').unsigned();

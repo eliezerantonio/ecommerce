@@ -35,14 +35,14 @@ function (_Schema) {
   _createClass(CouponProductSchema, [{
     key: "up",
     value: function up() {
-      this.table('coupon_product', function (table) {
+      this.create('coupon_product', function (table) {
         // alter table
         table.increments();
         table.integer('coupon_id').unsigned();
         table.integer('product_id').unsigned();
         table.timestamps();
         table.foreign('coupon_id').references('id').inTable('coupons').onDelete('cascade');
-        table.foreign('user_id').references('id').inTable('products').onDelete('cascade');
+        table.foreign('product_id').references('id').inTable('products').onDelete('cascade');
       });
     }
   }, {

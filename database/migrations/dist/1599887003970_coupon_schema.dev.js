@@ -35,7 +35,7 @@ function (_Schema) {
   _createClass(CouponSchema, [{
     key: "up",
     value: function up() {
-      this.table('coupons', function (table) {
+      this.create('coupons', function (table) {
         // alter table
         table.increments();
         table.string('code', 100).notNullable();

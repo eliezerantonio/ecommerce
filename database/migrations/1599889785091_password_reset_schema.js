@@ -5,16 +5,16 @@ const Schema = use('Schema')
 
 class PasswordResetSchema extends Schema {
   up() {
-    this.table('password_resets', (table) => {
+    this.create('password_resets', (table) => {
       // alter table
       table.increments()
-      table.string('email').noNullable()
-      table.string('token').noNullable().unique()
+      table.string('email').notNullable()
+      table.string('token').notNullable().unique()
 
       table.dateTime('expires_at')
       table.timestamps()
 
-      table.foreign('email').references('id').inTable('users').onDelete('cascade')
+      table.foreign('email').references('email').inTable('users').onDelete('cascade')
     })
   }
 

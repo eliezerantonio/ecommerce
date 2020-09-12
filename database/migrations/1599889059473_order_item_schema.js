@@ -5,7 +5,7 @@ const Schema = use('Schema')
 
 class OrderItemSchema extends Schema {
   up() {
-    this.table('order_items', (table) => {
+    this.create('order_items', (table) => {
       // alter table
       table.increments()
       table.integer('product_id').unsigned()
@@ -13,7 +13,7 @@ class OrderItemSchema extends Schema {
       table.decimal('subtotal', 12, 2)
       table.integer('order_id').unsigned()
 
-      table.foreign('coupon_id').references('id').inTable('coupons').onDelete('cascade')
+      table.foreign('product_id').references('id').inTable('products').onDelete('cascade')
       table.foreign('order_id').references('id').inTable('orders').onDelete('cascade')
 
     })

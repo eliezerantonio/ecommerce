@@ -35,14 +35,14 @@ function (_Schema) {
   _createClass(OrderItemSchema, [{
     key: "up",
     value: function up() {
-      this.table('order_items', function (table) {
+      this.create('order_items', function (table) {
         // alter table
         table.increments();
         table.integer('product_id').unsigned();
         table.integer('quantity').unsigned();
         table.decimal('subtotal', 12, 2);
         table.integer('order_id').unsigned();
-        table.foreign('coupon_id').references('id').inTable('coupons').onDelete('cascade');
+        table.foreign('product_id').references('id').inTable('products').onDelete('cascade');
         table.foreign('order_id').references('id').inTable('orders').onDelete('cascade');
       });
     }
